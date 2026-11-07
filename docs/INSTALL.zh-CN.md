@@ -1,14 +1,19 @@
 # CarWith 安装与回退
 
-这套方案在已 Root 的 **POCO F8 Pro 国际版（`annibale`）** 上运行。原版 CarWith 提供车联应用与系统服务；EEA Fix v2 负责国际版接口适配；APGC 0.1.2 是独立的候选补丁，用于让 CarWith 收到 Wi-Fi 底层实际返回的 AP/GC 模式切换结果。可以先装基础车联与 v2，确认正常后再启用候选。
+这套方案在已 Root 的 **国际版 Redmi K90**（海外型号 **POCO F8 Pro Global**，代号 `annibale`）上运行。原版 CarWith 提供车联应用与系统服务；EEA Fix v2 负责国际版接口适配；APGC 0.1.2 是独立的候选补丁，用于让 CarWith 收到 Wi-Fi 底层实际返回的 AP/GC 模式切换结果。可以先装基础车联与 v2，确认正常后再启用候选。
 
-**已验证：** 小米侧成功连接作为接收端的 OPPO Ace2／MiAuto，完成 Wi-Fi P2P 组网、认证并进入投屏，底层也确认关闭了临时模式。**2023 款小鹏 G6 的 CarLink 尚未复测。** 另一台手机上运行的接收端不能代表真车的组网、认证或投屏行为。
+**已验证（真车）：**
+- **国际版 Redmi K90** + **国际版澎湃（HyperOS Global）**
+- 车型 **MIHO**：连接成功，可用
+- 车型 **小鹏 G6**（CarLink）：连接成功，可用
+
+另：实验室阶段也曾用 OPPO Ace2／MiAuto 接收端验证过 Wi-Fi P2P 组网、认证与投屏；手机接收端仅作过程参考，**以真车结果为准**。
 
 ## 1. 安装前检查
 
 | 项目 | APGC 0.1.2 实测环境 |
 | --- | --- |
-| 手机与系统 | POCO F8 Pro（`annibale`），`OS3.0.302.0.WPKMIXM`，Android 16 / API 36 |
+| 手机与系统 | 国际版 Redmi K90 / POCO F8 Pro Global（`annibale`），`OS3.0.302.0.WPKMIXM`，Android 16 / API 36 |
 | 小米车联 | `com.miui.carlink`，`4.0.3-20260513`，`versionCode 104000003` |
 | Root 与挂载 | [SukiSU Ultra](https://github.com/SukiSU-Ultra/SukiSU-Ultra) `4.1.2-2-gf39c001e`、已启用 Zygisk、[Hybrid Mount](https://github.com/Hybrid-Mount/meta-hybrid_mount) `6.2.6-rc.1` |
 | LSPosed | [LSPosed 官方入口](https://lsposed.org/)；实测版本 `2.2.1 (7912)` / API 102 |
@@ -69,7 +74,7 @@ adb install --no-incremental -r packages/CarWith-EEA-Fix-2.0-force-success.apk
 adb install --no-incremental -r packages/CarWith-APGC-0.1.2-candidate.apk
 ```
 
-如果同时连接多台设备，先运行 `adb devices -l`，再在 `adb` 后加 `-s <目标设备序列号>`，确认目标是 POCO。若手机拒绝 USB 安装，使用本机安装器按提示操作。`-r` 允许更新已装的同签名应用；遇到签名不一致，先核对已装 APK 和来源，避免为覆盖安装而删掉已有应用或数据。
+如果同时连接多台设备，先运行 `adb devices -l`，再在 `adb` 后加 `-s <目标设备序列号>`，确认目标是这台 K90／F8 Pro。若手机拒绝 USB 安装，使用本机安装器按提示操作。`-r` 允许更新已装的同签名应用；遇到签名不一致，先核对已装 APK 和来源，避免为覆盖安装而删掉已有应用或数据。
 
 打开 LSPosed 管理器 → 模块，按下表选择作用域。列表中名称可能因语言和版本而不同，以括号里的标识为准。
 
@@ -84,7 +89,7 @@ adb install --no-incremental -r packages/CarWith-APGC-0.1.2-candidate.apk
 
 1. 重启解锁后，检查手机 Wi-Fi 可正常使用、`MiuiCarService` 存在、CarWith 设置页可打开。LSPosed 日志可查找 `global_wifi_profile_verified`、`service_hook_installed`、`hal_hook_installed` 和 `carwith_replacement_installed`。`optimization_reader_absent_in_profile` 在已验证的固件组合上允许出现。
 2. 若有第二台 Android 设备，可在接收端安装 [MiAuto 0.1.3](https://github.com/PiggyBackBayonet/MiAuto/releases/tag/v0.1.3)，打开接收端并用小米连接。验收分开看：底层是否记录 `enable_acknowledged_lease_60s`／`disable_acknowledged`、是否完成 P2P 组网、是否通过车联认证（`ConnectedState`）以及接收端是否进入投屏。模式命令成功只代表底层确认；仍要观察投屏。测完退出接收服务，避免它参与真车测试。
-3. 到 G6 旁停车，打开车机 **CarLink**，用小米连接一次，记录是否认证并成功投屏。若界面仍显示“连接失败”，根据该次日志区分模式命令、P2P 组网、认证或投屏阶段；若要比较 APGC 开关差异，保持同一车机入口和同一连接方式，关闭 APGC 后重启再测。分享日志时只保留所需事件，删去连接口令、认证材料、MAC、设备标识和 SSID。
+3. 到真车旁停车（本仓库已实测 **小鹏 G6 CarLink**、**MIHO**），打开对应车联入口，用小米连接一次，确认认证并成功投屏。若界面仍显示“连接失败”，根据该次日志区分模式命令、P2P 组网、认证或投屏阶段；若要比较 APGC 开关差异，保持同一车机入口和同一连接方式，关闭 APGC 后重启再测。分享日志时只保留所需事件，删去连接口令、认证材料、MAC、设备标识和 SSID。
 
 | 现象 | 处理 |
 | --- | --- |
