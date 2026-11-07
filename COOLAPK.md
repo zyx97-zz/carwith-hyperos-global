@@ -13,7 +13,7 @@
 不是国内澎湃，是 **国际版** 机型 + 国际版系统。需要 Root / LSPosed 一类环境，按仓库里的安装说明来，别跳步骤，先备份。
 
 开源仓库：
-REPO_URL_PLACEHOLDER
+https://github.com/zyx97-zz/carwith-hyperos-global
 
 安装与回退说明、校验相关说明都在仓库 docs 里。其他机型我没逐一测，能用算你赚到，翻车请自行回退。
 
