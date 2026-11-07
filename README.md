@@ -23,6 +23,10 @@
 
 发帖文案见 [COOLAPK.md](COOLAPK.md)。
 
+## 致谢
+
+原 Root 模块 **CarWith4XiaomiEEA** 作者：[哆啦D夢（DuolaD）](https://github.com/DuolaD) · [仓库](https://github.com/DuolaD/CarWith4XiaomiEEA)（MIT）。本仓库只做国际版机型真车实测与安装说明整理，不替代上游发布。
+
 ## 免责声明
 
 仅供学习交流。改机与车联改造风险自负；与小米、汽车厂商无关。请遵守法律法规与行车安全，驾驶中勿操作手机。

@@ -9,6 +9,8 @@
 
 另：实验室阶段也曾用 OPPO Ace2／MiAuto 接收端验证过 Wi-Fi P2P 组网、认证与投屏；手机接收端仅作过程参考，**以真车结果为准**。
 
+原 Root 模块 **CarWith4XiaomiEEA** 作者：[哆啦D夢（DuolaD）](https://github.com/DuolaD/CarWith4XiaomiEEA)（MIT）。请从上游 Release 下载原版 ZIP；本说明不替代作者发布。
+
 ## 1. 安装前检查
 
 | 项目 | APGC 0.1.2 实测环境 |
